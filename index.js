@@ -6,12 +6,14 @@ import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
 import ffmpeg from "fluent-ffmpeg";
 import ffmpegStatic from "ffmpeg-static";
+import ffprobeStatic from "ffprobe-static";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
 ffmpeg.setFfmpegPath(ffmpegStatic);
+ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
