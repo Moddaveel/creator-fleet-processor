@@ -63,12 +63,15 @@ app.post("/process", upload.single("vod"), async (req, res) => {
       await supabase.from("clips").insert({
         vod_filename: file.originalname,
         title: clip.title,
+        clip_summary: clip.reasoning,
+        clip_score: clip.score,
         start_time: clip.start_time,
         end_time: clip.end_time,
-        score: clip.score,
-        reasoning: clip.reasoning,
+        moment_type: clip.moment_type || "highlight",
+        content_pillar: clip.content_pillar || "Entertainment",
+        platforms: clip.platforms || ["tiktok", "youtube_shorts", "instagram_reels"],
         hook: clip.hook,
-        status: "pending",
+        status: "ready_for_review",
         clip_url: publicUrl,
       });
 
@@ -142,9 +145,16 @@ Return a JSON array like this:
     "end_time": 180,
     "score": 85,
     "reasoning": "why this is a good clip",
-    "hook": "opening hook for this clip"
+    "hook": "opening hook for this clip",
+    "moment_type": "highlight",
+    "content_pillar": "Entertainment",
+    "platforms": ["tiktok", "youtube_shorts", "instagram_reels"]
   }
 ]
+
+moment_type options: highlight, reaction, educational, funny, emotional
+content_pillar options: Commentary, Live Interaction, Entertainment, Building in Public
+platforms: choose from tiktok, youtube_shorts, instagram_reels, youtube based on clip length and type
 
 Spread clips throughout the full ${Math.round(duration / 60)} minute duration. Keep clips 30-90 seconds long.`
     }]
